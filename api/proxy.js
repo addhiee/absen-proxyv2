@@ -1,18 +1,35 @@
 export default async function handler(req, res) {
-    if (req.method !== "POST") {
-      return res.status(405).send("Method Not Allowed");
-    }
-  
-    const response = await fetch("https://script.google.com/macros/s/AKfycbyxho_M_Dnbc-1qlwEp5A1Xps7yffDVIB8vzo3hm8vLb6qU9fCLa4TJtpzEHvMVgxwb/exec", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(req.body),
-    });
-  
-    const result = await response.text();
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.status(200).send(result);
+  // Set CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Boleh diganti ke domain tertentu
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    // Handle preflight
+    res.status(200).end();
+    return;
   }
-  
+
+  if (req.method === "POST") {
+    try {
+      const response = await fetch(
+        "https://script.google.com/macros/s/AKfycbx0WrwYDE-xxx-xxx-xxx/exec",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(req.body),
+        }
+      );
+
+      const data = await response.json();
+      res.status(200).json(data);
+    } catch (error) {
+      console.error("Proxy error:", error);
+      res.status(500).json({ result: "error", message: error.message });
+    }
+  } else {
+    res.status(405).end(); // Method Not Allowed
+  }
+}
