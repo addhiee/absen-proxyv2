@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   // Set CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "*"); // Boleh diganti ke domain tertentu
+  res.setHeader("Access-Control-Allow-Origin", "https://absen-testv2.vercel.app"); // Boleh diganti ke domain tertentu
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   if (req.method === "POST") {
     try {
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbx0WrwYDE-xxx-xxx-xxx/exec",
+        "https://script.google.com/macros/s/AKfycbxtBfvnusK1O1cLYiqFj2GNiSkYcr74t5lhvMgp5XYmomHv0ow3hpifKEdvGU0YVkc/exec",
         {
           method: "POST",
           headers: {
